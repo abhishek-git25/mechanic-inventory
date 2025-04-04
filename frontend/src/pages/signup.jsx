@@ -34,29 +34,34 @@ function Signup() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch("http://localhost:3000/api/auth/sign-up", {
+      
+        const formDataToSend = new FormData();
+        formDataToSend.append("name", formData.name);
+        formDataToSend.append("email", formData.email);
+        formDataToSend.append("mobile", formData.mobile);
+        formDataToSend.append("password", formData.password);
+        formDataToSend.append("picture", formData.image); // Make sure this is a File object
+      
+        try {
+          const response = await fetch("http://localhost:3000/api/auth/sign-up", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                name: formData.name,
-                email: formData.email,
-                mobile: formData.mobile,
-                password: formData.password,
-                picture: formData.image,
-            }),
-        });
-
-        const data = await response.json();
-        if (data.success) {
-            toast.success("Signup Successful!,Login Now 🎉");
-            navigate("/login"); // Redirect to login page after successful signup
-        } else {
-            toast.error(data.message || "Signup Failed! ❌"); // Error Toast
+            body: formDataToSend,
+          });
+      
+          const data = await response.json();
+      
+          if (data.success) {
+            toast.success("Signup Successful! Login Now 🎉");
+            navigate("/login");
+          } else {
+            toast.error(data.message || "Signup Failed! ❌");
+          }
+        } catch (error) {
+          toast.error("Something went wrong ❌");
+          console.error("Signup error:", error);
         }
-
-    };
+      };
+      
 
     return (
         <div className="d-flex justify-content-center">

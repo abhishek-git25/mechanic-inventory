@@ -48,6 +48,7 @@ const Login = () => {
                 name: data.data.name,
                 email: data.data.email,
                 admin: data.data.admin,
+                pcicture: data.data.picture,
             }));
             setIsLogin(true); // Set login state to true
             navigate("/tool-list"); // Redirect to home page after successful login

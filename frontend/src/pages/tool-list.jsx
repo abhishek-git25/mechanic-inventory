@@ -30,24 +30,49 @@ const ToolList = () => {
         try {
             const response = await fetch("http://localhost:3000/api/tools/get-tools");
             const data = await response.json();
-            console.log(data, "16");
             setTools(data);
         } catch (error) {
-            console.error("Error fetching tools:", error);
             toast.error("Failed to fetch tools!");
         }
     };
 
-    console.log(tools, "24");
+    const handleIssue = async (toolId) => {
 
+        try {
+            const response = await fetch(`http://localhost:3000/api/tools/issue-tool/${toolId}`, {
+                method: "POST",
+            });
 
-    const handleIssue = () => {
-        console.log("issue tool");
-
+            const res = await response.json();
+            if (res.success) {
+                toast.success(res.message);
+                fetchTools()
+            } else {
+                toast.error(res.message || "Failed to add tool ❌");
+                fetchTools()
+            }
+        } catch (error) {
+            toast.error(error.message || "Network error! 🚨");
+        }
     }
 
-    const handleReturn = () => {
-        console.log("return tool");
+    const handleReturn = async (toolId) => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/tools/return-tool/${toolId}`, {
+                method: "POST",
+            });
+
+            const res = await response.json();
+            if (res.success) {
+                toast.success(res.message);
+                fetchTools()
+            } else {
+                toast.error(res.message || "Failed ! ❌");
+                fetchTools()
+            }
+        } catch (error) {
+            toast.error(error.message || "Network error! 🚨");
+        }
     }
 
 
